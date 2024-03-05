@@ -1,5 +1,5 @@
 
-const User = require('../models/users')
+const { User, validUser } = require('../models/users')
 
 const userList = [{
   email: "ddr@sdf",
@@ -22,28 +22,22 @@ const userList = [{
 ]
 
 exports.addUser = async (req, res) => {
-  // const  { name, email, phone  } = req.body;
-  const newUser = userList.push(req.body);
-  // res.json(newUser),
+  const valid = validUser(req.body)
+  if (valid.error) {
+    return res.status(400).json(valid.error.details)
+  }
+
+  userList.push(req.body);
+  res.json({ message: 'User added successfully' })
   res.send(userList)
 
 }
-// 
-
-
-
 
 exports.updateUser = async (req, res) => {
   const userId = req.params;
   const { name, email, phone } = req.body;
 
   try {
-    // const updatedUser =  userList.findOneAndUpdate(
-    //   { userId: userId }, // עדכון לפי שדה userId
-    //   { name, email,phone },
-    //   { new: true }
-    // );
-
     const updatedUser = userList.findIndex(x => x.userId === userId)
     if (!updatedUser) {
       return res.status(404).json({ message: 'User not found' });
@@ -53,7 +47,6 @@ exports.updateUser = async (req, res) => {
     userList[updatedUser].email = email;
     userList[updatedUser].phone = phone;
 
-    // res.json(updatedUser);
     res.send(userList)
   } catch (error) {
     console.error('Failed to update user:', error);
@@ -65,14 +58,13 @@ exports.deleteUser = async (req, res) => {
   const userId = req.params
   console.log(userId);
   try {
-    // const deletedUser = await User.findOneAndDelete({ userId: userId });
     const deletedUser = userList.findIndex(x => x.userId === userId)
     if (!deletedUser) {
       return res.status(404).json({ message: 'User not found' });
     }
     userList.splice(deletedUser, 1)
 
-    // res.json({ message: 'User deleted successfully' });
+    res.json({ message: 'User deleted successfully' });
   } catch (error) {
     console.error('Failed to delete user:', error);
     res.status(500).json({ message: 'Failed to delete user' });
