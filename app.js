@@ -1,7 +1,7 @@
 var express=require('express');
-
 var app=express();
 
-app.listen(8000,()=>{
-    console.log("port 8000")
+
+app.listen(7000,()=>{
+    console.log("port 7000")
 })
