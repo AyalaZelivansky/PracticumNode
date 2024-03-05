@@ -1,14 +1,24 @@
 {
-  "name": "node-for-git",
+  "name": "for-git",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.3"
-  }
+    "express": "^4.18.3",
+    "mongoose": "^8.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AyalaZelivansky/PracticumNode.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AyalaZelivansky/PracticumNode/issues"
+  },
+  "homepage": "https://github.com/AyalaZelivansky/PracticumNode#readme",
+  "description": ""
 }
