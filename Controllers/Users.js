@@ -1,5 +1,6 @@
 
-const { User, validUser } = require('../models/users')
+const { UserModel, validUser } = require('../models/users')
+
 
 const userList = [{
   email: "ddr@sdf",
@@ -21,38 +22,51 @@ const userList = [{
 }
 ]
 
-exports.addUser = async (req, res) => {
-  const valid = validUser(req.body)
-  if (valid.error) {
-    return res.status(400).json(valid.error.details)
-  }
 
-  userList.push(req.body);
-  res.json({ message: 'User added successfully' })
-  res.send(userList)
+
+
+exports.addUser = async (req, res) => {
+
+  try {
+    const { error } = validUser(req.body);
+
+    if (error) {
+      return res.status(400).json({ message: error.details });
+    }
+    await UserModel.create(req.body);
+
+    res.json({ message: 'משתמש נוסף בהצלחה' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'שגיאת שרת פנימית' });
+  }
 
 }
 
 exports.updateUser = async (req, res) => {
-  const userId = req.params;
-  const { name, email, phone } = req.body;
+  const { userId } = req.params;
+  console.log(userId);
+  const { name, email,phone } = req.body;
 
   try {
-    const updatedUser = userList.findIndex(x => x.userId === userId)
+    const updatedUser = await UserModel.findOneAndUpdate(
+      { userId: userId }, // עדכון לפי שדה userId
+      { name, email ,phone},
+      { new: true }
+    );
+
     if (!updatedUser) {
       return res.status(404).json({ message: 'User not found' });
-
     }
-    userList[updatedUser].name = name;
-    userList[updatedUser].email = email;
-    userList[updatedUser].phone = phone;
 
-    res.send(userList)
+    res.json(updatedUser);
   } catch (error) {
     console.error('Failed to update user:', error);
     res.status(500).json({ message: 'Failed to update user' });
   }
 };
+
+
 
 exports.deleteUser = async (req, res) => {
   const userId = req.params

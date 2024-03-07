@@ -1,22 +1,33 @@
 const mongoose = require('mongoose')
-const Joi=require("joi")
+const Joi = require("joi")
 
-const UsersSchema=new mongoose.Schema({
-    userId:Number,
-    phone:Number,
-    name:String,
-    email:String
+main().catch(err => console.log(err));
+
+async function main() {
+  await mongoose.connect('mongodb://127.0.0.1:27017/usersdb');
+console.log("coneect");
+}
+
+const UsersSchema = new mongoose.Schema({
+    userId: String,
+    phone: Number,
+    name: String,
+    email: String
 })
 
 
-module.exports=mongoose.model('Uswwer',UsersSchema)
+// module.exports = mongoose.model('User', UsersSchema)
+const UserModel=mongoose.model('User', UsersSchema)
+exports.UserModel=UserModel
 
-exports.validUser=(bodyData)=>{
-    const joiSchema=Joi.object({
-        phone:Joi.number().min(7).max(13),
-        name:Joi.string().min(2).max(99),
+exports.validUser=(_bodyData)  =>{
+    let joiSchema = Joi.object({
+        phone: Joi.number().min(7),
+        name: Joi.string().min(2).max(99),
         // לברר פרטי וילידציה על המייל
-        email:Joi.string()
+        email: Joi.string(),
+        userId:Joi.string()
     })
-    return joiSchema.validate(bodyData)
+    return joiSchema.validate(_bodyData)
 }
+
