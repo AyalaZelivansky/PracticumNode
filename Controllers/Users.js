@@ -2,29 +2,6 @@
 const { UserModel, validUser } = require('../models/users')
 
 
-const userList = [{
-  email: "ddr@sdf",
-  name: "sari",
-  phone: "0526164311",
-  userId: 1
-},
-{
-  email: "dfghdr@sdf",
-  name: "ayala",
-  phone: "0526164311",
-  userId: 2
-},
-{
-  email: "ddr@sgjhjdf",
-  name: "aaa",
-  phone: "0526562626",
-  userId: 3
-}
-]
-
-
-
-
 exports.addUser = async (req, res) => {
 
   try {
@@ -69,21 +46,43 @@ exports.updateUser = async (req, res) => {
 
 
 exports.deleteUser = async (req, res) => {
-  const userId = req.params
+  const userId = req.params.userId;
   console.log(userId);
   try {
-    const deletedUser = userList.findIndex(x => x.userId === userId)
+    const deletedUser = await UserModel.findOneAndDelete({userId: userId});
     if (!deletedUser) {
       return res.status(404).json({ message: 'User not found' });
     }
-    userList.splice(deletedUser, 1)
-
     res.json({ message: 'User deleted successfully' });
+    
   } catch (error) {
     console.error('Failed to delete user:', error);
     res.status(500).json({ message: 'Failed to delete user' });
   }
 };
+
+exports.getUserById = async (req, res) => {
+  const userId  = req.params.userId;
+
+  try {
+    const findUser = await UserModel.findOne({ userId:userId });
+    if (!findUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json(findUser);
+  } catch (error) {
+    console.error('Failed to get user:', error);
+    res.status(500).json({ message: 'Failed to get user' });
+  }
+};
+
+  
+   
+     
+    
+
+  
+  
 
 
 
