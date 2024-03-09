@@ -26,7 +26,7 @@ exports.validUser=(_bodyData)  =>{
         name: Joi.string().min(2).max(99),
         // לברר פרטי וילידציה על המייל
         email: Joi.string(),
-        userId:Joi.string()
+        userId:Joi.stringn()
     })
     return joiSchema.validate(_bodyData)
 }

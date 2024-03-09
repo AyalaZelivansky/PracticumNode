@@ -35,10 +35,10 @@ exports.addUser = async (req, res) => {
     }
     await UserModel.create(req.body);
 
-    res.json({ message: 'משתמש נוסף בהצלחה' });
+    res.json({ message: 'Added user successfully' });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'שגיאת שרת פנימית' });
+    return res.status(500).json({ message: 'internal server error' });
   }
 
 }
@@ -49,8 +49,13 @@ exports.updateUser = async (req, res) => {
   const { name, email,phone } = req.body;
 
   try {
+    const { error } = validUser(req.body);
+
+    if (error) {
+      return res.status(400).json({ message: error.details });
+    }
     const updatedUser = await UserModel.findOneAndUpdate(
-      { userId: userId }, // עדכון לפי שדה userId
+      { userId: userId }, 
       { name, email ,phone},
       { new: true }
     );
