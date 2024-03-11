@@ -1,36 +1,29 @@
 const { UserModel, validUser } = require('../models/users')
 
-exports.deletee= async (reqParams, res) => {
-  const userId = reqParams.userId;
-  console.log(userId);
-  try {
-    const deletedUser = await UserModel.findOneAndDelete({userId: userId});
-    if (!deletedUser) {
-      return res.status(404).json({ message: 'User not found' });
+exports.deletee= async (userId) => {
+
+    try {
+      var deletedUser = await UserModel.findOneAndDelete({userId: userId});
+     return deletedUser
+      
+      
+    } catch (error) {
+      console.error('Failed to delete user:', error);
+     
     }
-    res.json({ message: 'User deleted successfully' });
-    
-  } catch (error) {
-    console.error('Failed to delete user:', error);
-    res.status(500).json({ message: 'Failed to delete user' });
-  }
-};
-
-exports.get = async (reqParams, res) => {
-  const userId  = reqParams.userId;
-
-  try {
-    const findUser = await UserModel.findOne({ userId:userId });
-    if (!findUser) {
-      return res.status(404).json({ message: 'User not found' });
+  };
+  
+  exports.get = async (userId) => {
+  
+    try {
+      var findUser = await UserModel.findOne({ userId:userId });
+      return findUser;
+    } catch (error) {
+      console.error('Failed to get user ,services:', error);
+      
     }
-    res.json(findUser);
-  } catch (error) {
-    console.error('Failed to get user:', error);
-    res.status(500).json({ message: 'Failed to get user' });
-  }
-};
-
+  };
+  
 exports.add = async (reqBody,res) => {
 
     try {

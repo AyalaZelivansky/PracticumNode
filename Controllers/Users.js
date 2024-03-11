@@ -22,23 +22,37 @@ exports.updateUser = async (req, res) => {
 };
 
 exports.deleteUser=async(req,res)=>{
+  const userId=req.params.userId;
+  console.log(userId);
   try{
-    deletee (req.params,res)
+   var deleteUser = await deletee (userId);
+   if (!deleteUser) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+
+  res.json({ message: 'User deleted successfully' });
   }catch(error){
+
+
     console.error(error);
+    res.status(500).json({ message: 'Failed to delete user' });
   }
 }
-
 
 
 exports.getUserById = async (req, res) => {
   const userId = req.params.userId;
 
   try {
-    get(req.params,res)
+      var findUser=await get(userId);
+      if (!findUser) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      res.json(findUser);
     }
    catch (error) {
-    console.error( error);
+    console.error('Failed to get user:', error);
+    res.status(500).json({ message: 'Failed to get user' });
     
   }
 };
