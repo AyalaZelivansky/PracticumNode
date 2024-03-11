@@ -1,9 +1,7 @@
 const { UserModel, validUser } = require('../models/users')
 
-exports.deletee= async (userId) => {
-  
-
-  try {
+exports.deletee= async (userId) => { 
+ try {
     var deletedUser = await UserModel.findOneAndDelete({userId: userId});
    return deletedUser
     
@@ -24,6 +22,7 @@ exports.get = async (userId) => {
     
   }
 };
+
 
 exports.add = async (reqBody,res) => {
 

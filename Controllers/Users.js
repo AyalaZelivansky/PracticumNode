@@ -47,7 +47,6 @@ exports.deleteUser=async(req,res)=>{
 //   }
 // }
 
-
 exports.getUserById = async (req, res) => {
   const userId = req.params.userId;
 
