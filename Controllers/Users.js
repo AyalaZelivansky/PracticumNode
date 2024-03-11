@@ -1,49 +1,67 @@
 
 const { UserModel, validUser } = require('../models/users')
-const { add, update } = require('../Service/users')
+const { add, update } = require('../Service/usersService')
 
 
 exports.addUser = (req, res) => {
 
   try {
-    add(req.body, res)
+
+    const { error } = validUser(req.body);
+
+    if (error) {
+      return res.status(400).json({ message: error.details });
+    }
+    add(req.body)
+    res.json({ message: 'Added user successfully' });
+
   } catch (error) {
     console.error(error);
+    return res.status(500).json({ message: 'internal server error' });
+
   }
 
 }
 
-// exports.updateUser = async (req, res) => {
-//   const { userId } = req.params;
-//   console.log(userId);
-//   const { name, email, phone } = req.body;
-
-//   try {
-//     const updatedUser = await UserModel.findOneAndUpdate(
-//       { userId: userId }, // עדכון לפי שדה userId
-//       { name, email, phone },
-//       { new: true }
-//     );
-
-//     if (!updatedUser) {
-//       return res.status(404).json({ message: 'User not found' });
-//     }
-
-//     res.json(updatedUser);
-//   } catch (error) {
-//     console.error('Failed to update user:', error);
-//     res.status(500).json({ message: 'Failed to update user' });
-//   }
-// };
-
 exports.updateUser = async (req, res) => {
+  const { userId } = req.params;
+  console.log(userId);
+  const { name, email, phone } = req.body;
 
   try {
-    update(req.params, req.body, res)
+    const { error } = validUser(req.body);
+
+    if (error) {
+      return res.status(400).json({ message: error.details });
+    }
+    // const updatedUser = await UserModel.findOneAndUpdate(
+    //   { userId: userId }, // עדכון לפי שדה userId
+    //   { name, email, phone },
+    //   { new: true }
+    // );
+
+    // if (!updatedUser) {
+    //   return res.status(404).json({ message: 'User not found' });
+    // }
+    var users = await update(userId,req.body)
+    // res.json(updatedUser);
+    return res.status(200).json({ status: 200, data: users, message: "Succesfully" });
   } catch (error) {
-    console.error(error);
+    // console.error('Failed to update user:', error);
+    // res.status(500).json({ message: 'Failed to update user' });
+    return res.status(400).json({ status: 400, message: error.message });
+
   }
 };
+
+// exports.updateUser = async (req, res) => {
+
+//   try {
+//     update(req.params, req.body, res)
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
 
 
 
