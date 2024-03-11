@@ -12,6 +12,7 @@ exports.addUser = (req, res) => {
 
 }
 
+
 exports.updateUser = async (req, res) => {
 
   try {
@@ -38,7 +39,13 @@ exports.deleteUser=async(req,res)=>{
     res.status(500).json({ message: 'Failed to delete user' });
   }
 }
-
+// exports.deleteUser=async(req,res)=>{
+//   try{
+//     deletee (req.params,res)
+//   }catch(error){
+//     console.error(error);
+//   }
+// }
 
 exports.getUserById = async (req, res) => {
   const userId = req.params.userId;
@@ -56,7 +63,17 @@ exports.getUserById = async (req, res) => {
     
   }
 };
+// exports.getUserById = async (req, res) => {
+//   const userId = req.params.userId;
 
+//   try {
+//     get(req.params,res)
+//     }
+//    catch (error) {
+//     console.error( error);
+    
+//   }
+// };
 
 
 
