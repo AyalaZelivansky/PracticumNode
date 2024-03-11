@@ -17,7 +17,7 @@ exports.addUser = (req, res) => {
 
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'internal server error' });
+     res.status(500).json({ message: 'internal server error' });
 
   }
 
@@ -34,34 +34,16 @@ exports.updateUser = async (req, res) => {
     if (error) {
       return res.status(400).json({ message: error.details });
     }
-    // const updatedUser = await UserModel.findOneAndUpdate(
-    //   { userId: userId }, // עדכון לפי שדה userId
-    //   { name, email, phone },
-    //   { new: true }
-    // );
-
-    // if (!updatedUser) {
-    //   return res.status(404).json({ message: 'User not found' });
-    // }
+  
     var users = await update(userId,req.body)
-    // res.json(updatedUser);
     return res.status(200).json({ status: 200, data: users, message: "Succesfully" });
   } catch (error) {
-    // console.error('Failed to update user:', error);
-    // res.status(500).json({ message: 'Failed to update user' });
+  
     return res.status(400).json({ status: 400, message: error.message });
 
   }
 };
 
-// exports.updateUser = async (req, res) => {
-
-//   try {
-//     update(req.params, req.body, res)
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
 
 
 

@@ -1,4 +1,4 @@
-const { UserModel, validUser } = require('../models/users')
+const { UserModel } = require('../models/users')
 
 
 exports.add = async (reqBody) => {
