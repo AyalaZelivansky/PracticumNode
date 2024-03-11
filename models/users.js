@@ -20,7 +20,7 @@ exports.UserModel=UserModel
 
 exports.validUser=(_bodyData)  =>{
     let joiSchema = Joi.object({
-        phone: Joi.number().min(7),
+        // phone: Joi.number().min(7),
         name: Joi.string().min(2).max(99),
         email: Joi.string().email({ tlds: { allow: false } }),
         userId:Joi.string()

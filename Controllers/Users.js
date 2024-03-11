@@ -1,18 +1,17 @@
-const { UserModel, validUser } = require('../models/users')
-const { add,update,deletee,get} = require('../Service/users')
+const  {validUser} = require('../models/users')
+const { addUser,update,deletee,get} = require('../Service/users')
 
 
-exports.addUser = (req, res) => {
-
+exports.addUser =async (req, res) => {
   try {
 
-    const { error } = validUser(req.body);
+    const { errorV } = validUser(req.body);
 
-    if (error) {
-      return res.status(400).json({ message: error.details });
+    if (errorV) {
+      return res.status(400).json({ message: errorV.details });
     }
-    add(req.body)
-    res.json({ message: 'Added user successfully' });
+    var users=await addUser(req.body)
+    return res.status(200).json({ status: 200, data: users, message: "Succesfully" });
 
   } catch (error) {
     console.error(error);
