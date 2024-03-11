@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node app.js",
     "test": "jest"
+
   },
   "author": "",
   "license": "ISC",

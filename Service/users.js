@@ -1,5 +1,28 @@
 const { UserModel } = require('../models/users')
 
+exports.deletee= async (userId) => { 
+ try {
+    var deletedUser = await UserModel.findOneAndDelete({userId: userId});
+   return deletedUser
+    
+    
+  } catch (error) {
+    console.error('Failed to delete user:', error);
+   
+  }
+};
+
+exports.get = async (userId) => {
+
+  try {
+    var findUser = await UserModel.findOne({ userId:userId });
+    return findUser;
+  } catch (error) {
+    console.error('Failed to get user ,services:', error);
+    
+  }
+};
+
 
 exports.add = async (reqBody) => {
 
@@ -32,3 +55,4 @@ exports.update = async (userId, reqBody) => {
     console.error('Failed to update user:', error);
   }
 };
+
