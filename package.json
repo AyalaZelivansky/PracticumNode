@@ -21,5 +21,8 @@
     "url": "https://github.com/AyalaZelivansky/PracticumNode/issues"
   },
   "homepage": "https://github.com/AyalaZelivansky/PracticumNode#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
 }
