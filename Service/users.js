@@ -1,4 +1,4 @@
-const { UserModel, validUser } = require('../models/users')
+const { UserModel } = require('../models/users')
 
 exports.deletee= async (userId) => { 
  try {
@@ -24,49 +24,35 @@ exports.get = async (userId) => {
 };
 
 
-exports.add = async (reqBody,res) => {
+exports.add = async (reqBody) => {
 
-    try {
-      const { error } = validUser(reqBody);
-  
-      if (error) {
-        return res.status(400).json({ message: error.details });
-      }
-      await UserModel.create(reqBody);
-  
-      res.json({ message: 'Added user successfully' });
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: 'internal server error' });
-    }
-  
+  try {
+
+    var users=await UserModel.create(reqBody);
+    return users;
+
+  } catch (error) {
+    console.error(error);
   }
 
-  exports.update = async (reqParams,reqBody, res) => {
-    const { userId } = reqParams;
-    console.log(userId);
-    const { name, email, phone } = reqBody;
+}
+
+exports.update = async (userId, reqBody) => {
+
+  const { name, email, phone } = reqBody;
+
+  try {
+   
+    const updatedUser = await UserModel.findOneAndUpdate(
+      { userId: userId },
+      { name, email, phone },
+      { new: true }
+    );
+
+    return updatedUser;
   
-    try {
-        const { error } = validUser(reqBody);
-  
-        if (error) {
-          return res.status(400).json({ message: error.details });
-        }
-      const updatedUser = await UserModel.findOneAndUpdate(
-        { userId: userId }, 
-        { name, email, phone },
-        { new: true }
-      );
-  
-      if (!updatedUser) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-  
-      res.json(updatedUser);
-    } catch (error) {
-      console.error('Failed to update user:', error);
-      res.status(500).json({ message: 'Failed to update user' });
-    }
-  };
+  } catch (error) {
+    console.error('Failed to update user:', error);
+  }
+};
 

@@ -5,20 +5,42 @@ const { add,update,deletee,get} = require('../Service/users')
 exports.addUser = (req, res) => {
 
   try {
-    add(req.body, res)
+
+    const { error } = validUser(req.body);
+
+    if (error) {
+      return res.status(400).json({ message: error.details });
+    }
+    add(req.body)
+    res.json({ message: 'Added user successfully' });
+
   } catch (error) {
     console.error(error);
+     res.status(500).json({ message: 'internal server error' });
+
   }
 
 }
 
 
 exports.updateUser = async (req, res) => {
+  const { userId } = req.params;
+  console.log(userId);
+  const { name, email, phone } = req.body;
 
   try {
-    update(req.params, req.body, res)
+    const { error } = validUser(req.body);
+
+    if (error) {
+      return res.status(400).json({ message: error.details });
+    }
+  
+    var users = await update(userId,req.body)
+    return res.status(200).json({ status: 200, data: users, message: "Succesfully" });
   } catch (error) {
-    console.error(error);
+  
+    return res.status(400).json({ status: 400, message: error.message });
+
   }
 };
 
@@ -33,6 +55,7 @@ exports.deleteUser=async(req,res)=>{
 
   res.json({ message: 'User deleted successfully' });
   }catch(error){
+
 
 
     console.error(error);
