@@ -1,6 +1,6 @@
 
 const { UserModel, validUser } = require('../models/users')
-const { add, update } = require('../Service/usersService')
+const { add, update } = require('../Service/users')
 
 
 exports.addUser = (req, res) => {
